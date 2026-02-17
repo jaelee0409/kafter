@@ -26,7 +26,7 @@ function formatDateHeader(dateStr: string) {
 
 export default function EventList({ events }: { events: Event[] }) {
     const [selectedNeighborhood, setSelectedNeighborhood] = useState<string | null>(null)
-    const [selectedGenre, setSelectedGenre] = useState<string | null>(null)
+    const [selectedGenres, setSelectedGenres] = useState<string[]>([])
 
     const neighborhoods = Array.from(
         new Set(events.map((e) => e.neighborhood).filter(Boolean))
@@ -35,14 +35,17 @@ export default function EventList({ events }: { events: Event[] }) {
     const genres = Array.from(
         new Set(
             events.flatMap((e) =>
-                e.genre ? e.genre.split("·").map((g) => g.trim()).filter(Boolean) : []
+                e.genre ? e.genre.split(",").map((g) => g.trim()).filter(Boolean) : []
             )
         )
     )
 
     const filtered = events.filter((e) => {
         if (selectedNeighborhood && e.neighborhood !== selectedNeighborhood) return false
-        if (selectedGenre && !e.genre?.split("·").map((g) => g.trim()).includes(selectedGenre)) return false
+        if (selectedGenres.length > 0) {
+            const eventGenres = e.genre ? e.genre.split(",").map((g) => g.trim()) : []
+            if (!selectedGenres.some((g) => eventGenres.includes(g))) return false
+        }
         return true
     })
 
@@ -91,9 +94,9 @@ export default function EventList({ events }: { events: Event[] }) {
                         <div className="flex items-center gap-3 flex-wrap">
                             <span className="text-xs uppercase tracking-wider text-zinc-500 w-8 shrink-0">장르</span>
                             <button
-                                onClick={() => setSelectedGenre(null)}
+                                onClick={() => setSelectedGenres([])}
                                 className={`px-4 py-1.5 text-xs rounded-full border transition-colors ${
-                                    selectedGenre === null
+                                    selectedGenres.length === 0
                                         ? "border-white text-white"
                                         : "border-zinc-700 text-zinc-500 hover:border-zinc-400 hover:text-zinc-300"
                                 }`}
@@ -103,9 +106,13 @@ export default function EventList({ events }: { events: Event[] }) {
                             {genres.map((g) => (
                                 <button
                                     key={g}
-                                    onClick={() => setSelectedGenre(selectedGenre === g ? null : g)}
+                                    onClick={() =>
+                                        setSelectedGenres((prev) =>
+                                            prev.includes(g) ? prev.filter((s) => s !== g) : [...prev, g]
+                                        )
+                                    }
                                     className={`px-4 py-1.5 text-xs rounded-full border transition-colors ${
-                                        selectedGenre === g
+                                        selectedGenres.includes(g)
                                             ? "border-white text-white"
                                             : "border-zinc-700 text-zinc-500 hover:border-zinc-400 hover:text-zinc-300"
                                     }`}
