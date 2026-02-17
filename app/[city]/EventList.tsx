@@ -63,63 +63,67 @@ export default function EventList({ events }: { events: Event[] }) {
             {(neighborhoods.length > 0 || genres.length > 0) && (
                 <div className="space-y-3 mb-12">
                     {neighborhoods.length > 0 && (
-                        <div className="flex items-center gap-3 flex-wrap">
-                            <span className="text-xs uppercase tracking-wider text-zinc-500 w-8 shrink-0">지역</span>
-                            <button
-                                onClick={() => setSelectedNeighborhood(null)}
-                                className={`px-4 py-1.5 text-xs rounded-full border transition-colors ${
-                                    selectedNeighborhood === null
-                                        ? "border-white text-white"
-                                        : "border-zinc-700 text-zinc-500 hover:border-zinc-400 hover:text-zinc-300"
-                                }`}
-                            >
-                                전체
-                            </button>
-                            {neighborhoods.map((n) => (
+                        <div className="flex gap-3">
+                            <span className="text-xs uppercase tracking-wider text-zinc-500 shrink-0 pt-1.5">지역</span>
+                            <div className="flex flex-wrap gap-3">
                                 <button
-                                    key={n}
-                                    onClick={() => setSelectedNeighborhood(selectedNeighborhood === n ? null : n)}
+                                    onClick={() => setSelectedNeighborhood(null)}
                                     className={`px-4 py-1.5 text-xs rounded-full border transition-colors ${
-                                        selectedNeighborhood === n
+                                        selectedNeighborhood === null
                                             ? "border-white text-white"
                                             : "border-zinc-700 text-zinc-500 hover:border-zinc-400 hover:text-zinc-300"
                                     }`}
                                 >
-                                    {n}
+                                    전체
                                 </button>
-                            ))}
+                                {neighborhoods.map((n) => (
+                                    <button
+                                        key={n}
+                                        onClick={() => setSelectedNeighborhood(selectedNeighborhood === n ? null : n)}
+                                        className={`px-4 py-1.5 text-xs rounded-full border transition-colors ${
+                                            selectedNeighborhood === n
+                                                ? "border-white text-white"
+                                                : "border-zinc-700 text-zinc-500 hover:border-zinc-400 hover:text-zinc-300"
+                                        }`}
+                                    >
+                                        {n}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
                     )}
                     {genres.length > 0 && (
-                        <div className="flex items-center gap-3 flex-wrap">
-                            <span className="text-xs uppercase tracking-wider text-zinc-500 w-8 shrink-0">장르</span>
-                            <button
-                                onClick={() => setSelectedGenres([])}
-                                className={`px-4 py-1.5 text-xs rounded-full border transition-colors ${
-                                    selectedGenres.length === 0
-                                        ? "border-white text-white"
-                                        : "border-zinc-700 text-zinc-500 hover:border-zinc-400 hover:text-zinc-300"
-                                }`}
-                            >
-                                전체
-                            </button>
-                            {genres.map((g) => (
+                        <div className="flex gap-3">
+                            <span className="text-xs uppercase tracking-wider text-zinc-500 shrink-0 pt-1.5">장르</span>
+                            <div className="flex flex-wrap gap-3">
                                 <button
-                                    key={g}
-                                    onClick={() =>
-                                        setSelectedGenres((prev) =>
-                                            prev.includes(g) ? prev.filter((s) => s !== g) : [...prev, g]
-                                        )
-                                    }
+                                    onClick={() => setSelectedGenres([])}
                                     className={`px-4 py-1.5 text-xs rounded-full border transition-colors ${
-                                        selectedGenres.includes(g)
+                                        selectedGenres.length === 0
                                             ? "border-white text-white"
                                             : "border-zinc-700 text-zinc-500 hover:border-zinc-400 hover:text-zinc-300"
                                     }`}
                                 >
-                                    {g}
+                                    전체
                                 </button>
-                            ))}
+                                {genres.map((g) => (
+                                    <button
+                                        key={g}
+                                        onClick={() =>
+                                            setSelectedGenres((prev) =>
+                                                prev.includes(g) ? prev.filter((s) => s !== g) : [...prev, g]
+                                            )
+                                        }
+                                        className={`px-4 py-1.5 text-xs rounded-full border transition-colors ${
+                                            selectedGenres.includes(g)
+                                                ? "border-white text-white"
+                                                : "border-zinc-700 text-zinc-500 hover:border-zinc-400 hover:text-zinc-300"
+                                        }`}
+                                    >
+                                        {g}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
                     )}
                 </div>
