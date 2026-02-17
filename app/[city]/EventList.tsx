@@ -61,7 +61,7 @@ export default function EventList({ events }: { events: Event[] }) {
                 <div className="space-y-3 mb-12">
                     {neighborhoods.length > 0 && (
                         <div className="flex items-center gap-3 flex-wrap">
-                            <span className="text-xs uppercase tracking-wider text-zinc-600 w-8 shrink-0">지역</span>
+                            <span className="text-xs uppercase tracking-wider text-zinc-500 w-8 shrink-0">지역</span>
                             <button
                                 onClick={() => setSelectedNeighborhood(null)}
                                 className={`px-4 py-1.5 text-xs rounded-full border transition-colors ${
@@ -89,7 +89,7 @@ export default function EventList({ events }: { events: Event[] }) {
                     )}
                     {genres.length > 0 && (
                         <div className="flex items-center gap-3 flex-wrap">
-                            <span className="text-xs uppercase tracking-wider text-zinc-600 w-8 shrink-0">장르</span>
+                            <span className="text-xs uppercase tracking-wider text-zinc-500 w-8 shrink-0">장르</span>
                             <button
                                 onClick={() => setSelectedGenre(null)}
                                 className={`px-4 py-1.5 text-xs rounded-full border transition-colors ${
@@ -149,7 +149,7 @@ export default function EventList({ events }: { events: Event[] }) {
 
                                         {/* Venue */}
                                         <div className="mt-2 flex gap-3 text-sm">
-                                            <span className="w-10 shrink-0 text-xs uppercase tracking-wider text-zinc-600 pt-px">클럽</span>
+                                            <span className="w-10 shrink-0 text-xs uppercase tracking-wider text-zinc-500 pt-px">클럽</span>
                                             <span className="text-zinc-400">
                                                 {[event.neighborhood, event.club].filter(Boolean).join(" · ")}
                                             </span>
@@ -158,16 +158,25 @@ export default function EventList({ events }: { events: Event[] }) {
                                         {/* Lineup */}
                                         {event.lineup && (
                                             <div className="mt-1.5 flex gap-3 text-sm">
-                                                <span className="w-10 shrink-0 text-xs uppercase tracking-wider text-zinc-600 pt-px">라인업</span>
+                                                <span className="w-10 shrink-0 text-xs uppercase tracking-wider text-zinc-500 pt-px">라인업</span>
                                                 <span className="text-zinc-300">{event.lineup}</span>
                                             </div>
                                         )}
 
-                                        {/* Genre + price */}
-                                        {(event.genre || event.price) && (
-                                            <p className="mt-2 text-xs text-zinc-600 uppercase tracking-wider">
-                                                {[event.genre, event.price].filter(Boolean).join(" · ")}
-                                            </p>
+                                        {/* Genre */}
+                                        {event.genre && (
+                                            <div className="mt-1.5 flex gap-3 text-sm">
+                                                <span className="w-10 shrink-0 text-xs uppercase tracking-wider text-zinc-500 pt-px">장르</span>
+                                                <span className="text-sm text-zinc-400 uppercase tracking-wider pt-px">{event.genre}</span>
+                                            </div>
+                                        )}
+
+                                        {/* Price */}
+                                        {event.price && (
+                                            <div className="mt-1.5 flex gap-3 text-sm">
+                                                <span className="w-10 shrink-0 text-xs uppercase tracking-wider text-zinc-500 pt-px">가격</span>
+                                                <span className="text-sm text-zinc-400 pt-px">{event.price}</span>
+                                            </div>
                                         )}
 
                                         {/* Link */}
@@ -176,7 +185,7 @@ export default function EventList({ events }: { events: Event[] }) {
                                                 href={event.url}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="mt-3 inline-block text-xs text-zinc-500 hover:text-white transition-colors"
+                                                className="mt-3 inline-block text-sm text-zinc-400 hover:text-white transition-colors"
                                             >
                                                 이벤트 보기 →
                                             </a>
@@ -188,7 +197,7 @@ export default function EventList({ events }: { events: Event[] }) {
                     ))}
                 </div>
             ) : (
-                <p className="text-zinc-600 text-sm">해당 지역 이벤트가 없습니다.</p>
+                <p className="text-zinc-500 text-sm">해당 지역 이벤트가 없습니다.</p>
             )}
         </div>
     )
