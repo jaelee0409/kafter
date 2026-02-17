@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation"
+import type { Metadata } from "next"
 import Link from "next/link"
 import { supabase } from "@/lib/supabase"
 import EventList from "./EventList"
@@ -7,6 +8,25 @@ const cities: Record<string, string> = {
     seoul: "서울",
     busan: "부산",
     daegu: "대구",
+}
+
+export async function generateMetadata({
+    params,
+}: {
+    params: Promise<{ city: string }>
+}): Promise<Metadata> {
+    const { city } = await params
+    const cityName = cities[city]
+    if (!cityName) return {}
+    return {
+        title: `${cityName} 클럽 이벤트`,
+        description: `${cityName} 클럽 DJ 라인업과 파티 일정. 테크노·하우스 이벤트 정보 제공.`,
+        openGraph: {
+            title: `${cityName} 클럽 이벤트 | KAfter`,
+            description: `${cityName} 클럽 DJ 라인업과 파티 일정. 테크노·하우스 이벤트 정보 제공.`,
+            url: `/${city}`,
+        },
+    }
 }
 
 export default async function CityPage({
