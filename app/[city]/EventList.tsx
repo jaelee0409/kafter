@@ -25,15 +25,26 @@ function formatDateHeader(dateStr: string) {
 }
 
 export default function EventList({ events }: { events: Event[] }) {
-    const [selected, setSelected] = useState<string | null>(null)
+    const [selectedNeighborhood, setSelectedNeighborhood] = useState<string | null>(null)
+    const [selectedGenre, setSelectedGenre] = useState<string | null>(null)
 
     const neighborhoods = Array.from(
         new Set(events.map((e) => e.neighborhood).filter(Boolean))
     ) as string[]
 
-    const filtered = selected
-        ? events.filter((e) => e.neighborhood === selected)
-        : events
+    const genres = Array.from(
+        new Set(
+            events.flatMap((e) =>
+                e.genre ? e.genre.split("·").map((g) => g.trim()).filter(Boolean) : []
+            )
+        )
+    )
+
+    const filtered = events.filter((e) => {
+        if (selectedNeighborhood && e.neighborhood !== selectedNeighborhood) return false
+        if (selectedGenre && !e.genre?.split("·").map((g) => g.trim()).includes(selectedGenre)) return false
+        return true
+    })
 
     // Group by date
     const grouped = filtered.reduce<Record<string, Event[]>>((acc, event) => {
@@ -45,32 +56,65 @@ export default function EventList({ events }: { events: Event[] }) {
 
     return (
         <div className="mx-auto mt-12 max-w-4xl">
-            {/* Neighborhood filter */}
-            {neighborhoods.length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-12">
-                    <button
-                        onClick={() => setSelected(null)}
-                        className={`px-4 py-1.5 text-xs rounded-full border transition-colors ${
-                            selected === null
-                                ? "border-white text-white"
-                                : "border-zinc-700 text-zinc-500 hover:border-zinc-400 hover:text-zinc-300"
-                        }`}
-                    >
-                        전체
-                    </button>
-                    {neighborhoods.map((n) => (
-                        <button
-                            key={n}
-                            onClick={() => setSelected(selected === n ? null : n)}
-                            className={`px-4 py-1.5 text-xs rounded-full border transition-colors ${
-                                selected === n
-                                    ? "border-white text-white"
-                                    : "border-zinc-700 text-zinc-500 hover:border-zinc-400 hover:text-zinc-300"
-                            }`}
-                        >
-                            {n}
-                        </button>
-                    ))}
+            {/* Filters */}
+            {(neighborhoods.length > 0 || genres.length > 0) && (
+                <div className="space-y-3 mb-12">
+                    {neighborhoods.length > 0 && (
+                        <div className="flex items-center gap-3 flex-wrap">
+                            <span className="text-xs uppercase tracking-wider text-zinc-600 w-8 shrink-0">지역</span>
+                            <button
+                                onClick={() => setSelectedNeighborhood(null)}
+                                className={`px-4 py-1.5 text-xs rounded-full border transition-colors ${
+                                    selectedNeighborhood === null
+                                        ? "border-white text-white"
+                                        : "border-zinc-700 text-zinc-500 hover:border-zinc-400 hover:text-zinc-300"
+                                }`}
+                            >
+                                전체
+                            </button>
+                            {neighborhoods.map((n) => (
+                                <button
+                                    key={n}
+                                    onClick={() => setSelectedNeighborhood(selectedNeighborhood === n ? null : n)}
+                                    className={`px-4 py-1.5 text-xs rounded-full border transition-colors ${
+                                        selectedNeighborhood === n
+                                            ? "border-white text-white"
+                                            : "border-zinc-700 text-zinc-500 hover:border-zinc-400 hover:text-zinc-300"
+                                    }`}
+                                >
+                                    {n}
+                                </button>
+                            ))}
+                        </div>
+                    )}
+                    {genres.length > 0 && (
+                        <div className="flex items-center gap-3 flex-wrap">
+                            <span className="text-xs uppercase tracking-wider text-zinc-600 w-8 shrink-0">장르</span>
+                            <button
+                                onClick={() => setSelectedGenre(null)}
+                                className={`px-4 py-1.5 text-xs rounded-full border transition-colors ${
+                                    selectedGenre === null
+                                        ? "border-white text-white"
+                                        : "border-zinc-700 text-zinc-500 hover:border-zinc-400 hover:text-zinc-300"
+                                }`}
+                            >
+                                전체
+                            </button>
+                            {genres.map((g) => (
+                                <button
+                                    key={g}
+                                    onClick={() => setSelectedGenre(selectedGenre === g ? null : g)}
+                                    className={`px-4 py-1.5 text-xs rounded-full border transition-colors ${
+                                        selectedGenre === g
+                                            ? "border-white text-white"
+                                            : "border-zinc-700 text-zinc-500 hover:border-zinc-400 hover:text-zinc-300"
+                                    }`}
+                                >
+                                    {g}
+                                </button>
+                            ))}
+                        </div>
+                    )}
                 </div>
             )}
 

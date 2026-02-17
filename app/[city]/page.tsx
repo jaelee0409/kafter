@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation"
+import Link from "next/link"
 import { supabase } from "@/lib/supabase"
 import EventList from "./EventList"
 
@@ -30,7 +31,10 @@ export default async function CityPage({
     return (
         <main className="min-h-screen bg-black text-white px-6 py-24">
             <div className="mx-auto max-w-4xl">
-                <h1 className="text-4xl font-semibold tracking-tight">
+                <Link href="/" className="text-xs text-zinc-600 hover:text-zinc-400 transition-colors">
+                    ← 홈
+                </Link>
+                <h1 className="mt-6 text-4xl font-semibold tracking-tight">
                     {cityName}
                 </h1>
                 <p className="mt-4 text-gray-500">
