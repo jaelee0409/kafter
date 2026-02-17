@@ -15,7 +15,12 @@ export default function RootLayout({
 }) {
     return (
         <html lang="ko">
-            <body suppressHydrationWarning>{children}</body>
+            <body suppressHydrationWarning className="min-h-screen bg-black text-white flex flex-col">
+                <div className="flex-1">{children}</div>
+                <footer className="border-t border-zinc-900 px-6 py-10 text-center text-xs text-gray-600">
+                    © {new Date().getFullYear()} KAfter
+                </footer>
+            </body>
         </html>
     )
 }

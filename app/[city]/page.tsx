@@ -29,7 +29,7 @@ export default async function CityPage({
         .order("date", { ascending: true })
 
     return (
-        <main className="min-h-screen bg-black text-white px-6 py-24">
+        <main className="px-6 py-24">
             <div className="mx-auto max-w-4xl">
                 <Link href="/" className="text-xs text-zinc-600 hover:text-zinc-400 transition-colors">
                     ← 홈

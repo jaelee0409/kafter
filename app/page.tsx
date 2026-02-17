@@ -8,7 +8,7 @@ const cities = [
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main>
       {/* Hero */}
       <section className="px-6 py-16 text-center">
         <h1 className="text-5xl font-semibold tracking-tight">Kafter</h1>
@@ -30,11 +30,6 @@ export default function Home() {
           ))}
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="border-t border-zinc-900 px-6 py-10 text-center text-xs text-gray-600">
-        © {new Date().getFullYear()} KAfter
-      </footer>
     </main>
   );
 }
