@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 
 import "./globals.css";
 
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
     template: "%s | KAfter",
   },
   description:
-    "한국 클럽 DJ 라인업, 파티 일정, 테크노·하우스 이벤트 정보를 모아보는 클럽 인덱스. 서울·부산·대구 클럽 정보 제공.",
+    "한국 클럽 DJ 라인업, 파티 일정, 테크노, 하우스, 힙합 등 다양한 장르 이벤트 정보를 모아보는 클럽 인덱스. 전국 클럽 정보 제공.",
   openGraph: {
     siteName: "KAfter",
     locale: "ko_KR",
@@ -38,6 +39,7 @@ export default function RootLayout({
         <footer className="border-t border-zinc-900 px-6 py-10 text-center text-xs text-gray-600">
           © {new Date().getFullYear()} KAfter
         </footer>
+        <Analytics />
       </body>
     </html>
   );
