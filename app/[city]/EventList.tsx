@@ -104,17 +104,19 @@ export default function EventList({ events }: { events: Event[] }) {
                                         </div>
 
                                         {/* Venue */}
-                                        <p className="mt-1 text-sm text-zinc-400">
-                                            {[event.neighborhood, event.club]
-                                                .filter(Boolean)
-                                                .join(" · ")}
-                                        </p>
+                                        <div className="mt-2 flex gap-3 text-sm">
+                                            <span className="w-10 shrink-0 text-xs uppercase tracking-wider text-zinc-600 pt-px">클럽</span>
+                                            <span className="text-zinc-400">
+                                                {[event.neighborhood, event.club].filter(Boolean).join(" · ")}
+                                            </span>
+                                        </div>
 
                                         {/* Lineup */}
                                         {event.lineup && (
-                                            <p className="mt-2 text-sm text-zinc-300">
-                                                {event.lineup}
-                                            </p>
+                                            <div className="mt-1.5 flex gap-3 text-sm">
+                                                <span className="w-10 shrink-0 text-xs uppercase tracking-wider text-zinc-600 pt-px">라인업</span>
+                                                <span className="text-zinc-300">{event.lineup}</span>
+                                            </div>
                                         )}
 
                                         {/* Genre + price */}
