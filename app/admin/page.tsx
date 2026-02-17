@@ -11,6 +11,7 @@ const cities = [
 
 const emptyForm = {
     city: "seoul",
+    name: "",
     date: "",
     start_time: "",
     neighborhood: "",
@@ -37,6 +38,7 @@ export default function AdminPage() {
 
         const { error } = await supabase.from("events").insert({
             city: form.city,
+            name: form.name || null,
             date: form.date,
             start_time: form.start_time || null,
             neighborhood: form.neighborhood || null,
@@ -74,6 +76,18 @@ export default function AdminPage() {
                                 <option key={c.value} value={c.value}>{c.label}</option>
                             ))}
                         </select>
+                    </div>
+
+                    <div>
+                        <label className="block text-xs uppercase tracking-widest text-gray-500 mb-2">Event Name</label>
+                        <input
+                            type="text"
+                            name="name"
+                            value={form.name}
+                            onChange={handleChange}
+                            placeholder="e.g. Faust presents: Ben Klock"
+                            className="w-full bg-zinc-900 border border-zinc-700 rounded px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-500"
+                        />
                     </div>
 
                     <div className="flex gap-4">

@@ -4,6 +4,7 @@ import { useState } from "react"
 
 type Event = {
     id: number
+    name: string | null
     date: string
     start_time: string | null
     neighborhood: string | null
@@ -14,14 +15,13 @@ type Event = {
     url: string | null
 }
 
-function formatDate(dateStr: string) {
+function formatDateHeader(dateStr: string) {
     const d = new Date(dateStr + "T00:00:00")
     const days = ["일", "월", "화", "수", "목", "금", "토"]
-    const year = d.getFullYear()
-    const month = String(d.getMonth() + 1).padStart(2, "0")
-    const day = String(d.getDate()).padStart(2, "0")
+    const month = d.getMonth() + 1
+    const day = d.getDate()
     const dow = days[d.getDay()]
-    return `${year}.${month}.${day} (${dow})`
+    return `${month}월 ${day}일 (${dow})`
 }
 
 export default function EventList({ events }: { events: Event[] }) {
@@ -35,17 +35,25 @@ export default function EventList({ events }: { events: Event[] }) {
         ? events.filter((e) => e.neighborhood === selected)
         : events
 
+    // Group by date
+    const grouped = filtered.reduce<Record<string, Event[]>>((acc, event) => {
+        if (!acc[event.date]) acc[event.date] = []
+        acc[event.date].push(event)
+        return acc
+    }, {})
+    const sortedDates = Object.keys(grouped).sort()
+
     return (
         <div className="mx-auto mt-12 max-w-4xl">
             {/* Neighborhood filter */}
-            {neighborhoods.length > 1 && (
+            {neighborhoods.length > 0 && (
                 <div className="flex flex-wrap gap-2 mb-12">
                     <button
                         onClick={() => setSelected(null)}
-                        className={`px-3 py-1 text-xs rounded-full border transition-colors ${
+                        className={`px-4 py-1.5 text-xs rounded-full border transition-colors ${
                             selected === null
                                 ? "border-white text-white"
-                                : "border-zinc-700 text-zinc-500 hover:border-zinc-500 hover:text-zinc-300"
+                                : "border-zinc-700 text-zinc-500 hover:border-zinc-400 hover:text-zinc-300"
                         }`}
                     >
                         전체
@@ -54,10 +62,10 @@ export default function EventList({ events }: { events: Event[] }) {
                         <button
                             key={n}
                             onClick={() => setSelected(selected === n ? null : n)}
-                            className={`px-3 py-1 text-xs rounded-full border transition-colors ${
+                            className={`px-4 py-1.5 text-xs rounded-full border transition-colors ${
                                 selected === n
                                     ? "border-white text-white"
-                                    : "border-zinc-700 text-zinc-500 hover:border-zinc-500 hover:text-zinc-300"
+                                    : "border-zinc-700 text-zinc-500 hover:border-zinc-400 hover:text-zinc-300"
                             }`}
                         >
                             {n}
@@ -66,46 +74,75 @@ export default function EventList({ events }: { events: Event[] }) {
                 </div>
             )}
 
-            {/* Events */}
-            {filtered.length > 0 ? (
-                <div className="space-y-10">
-                    {filtered.map((event) => (
-                        <div key={event.id} className="border-b border-zinc-800 pb-10">
-                            <p className="text-sm text-gray-500">
-                                {formatDate(event.date)}
-                                {event.start_time && <span className="ml-2">{event.start_time}</span>}
-                            </p>
-                            <div className="mt-3 text-lg">
-                                {event.neighborhood && (
-                                    <span className="text-gray-400">{event.neighborhood}{" · "}</span>
-                                )}
-                                <span>{event.club}</span>
+            {/* Events grouped by date */}
+            {sortedDates.length > 0 ? (
+                <div className="space-y-14">
+                    {sortedDates.map((date) => (
+                        <div key={date}>
+                            {/* Date header */}
+                            <div className="flex items-center gap-4 mb-6">
+                                <span className="text-xs font-medium uppercase tracking-widest text-zinc-500">
+                                    {formatDateHeader(date)}
+                                </span>
+                                <div className="flex-1 h-px bg-zinc-800" />
                             </div>
-                            {event.lineup && (
-                                <p className="mt-2 text-gray-300">{event.lineup}</p>
-                            )}
-                            {(event.genre || event.price) && (
-                                <p className="mt-1 text-xs text-zinc-600 uppercase tracking-wider">
-                                    {event.genre}
-                                    {event.genre && event.price && " · "}
-                                    {event.price}
-                                </p>
-                            )}
-                            {event.url && (
-                                <a
-                                    href={event.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="mt-3 inline-block text-xs text-zinc-500 hover:text-white transition-colors"
-                                >
-                                    이벤트 보기 →
-                                </a>
-                            )}
+
+                            {/* Events under this date */}
+                            <div className="space-y-8">
+                                {grouped[date].map((event) => (
+                                    <div key={event.id} className="pl-4 border-l border-zinc-800">
+                                        {/* Name + time */}
+                                        <div className="flex items-baseline justify-between gap-4">
+                                            <h3 className="text-xl font-medium text-white">
+                                                {event.name || event.club}
+                                            </h3>
+                                            {event.start_time && (
+                                                <span className="text-sm text-zinc-500 shrink-0">
+                                                    {event.start_time}
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        {/* Venue */}
+                                        <p className="mt-1 text-sm text-zinc-400">
+                                            {[event.neighborhood, event.club]
+                                                .filter(Boolean)
+                                                .join(" · ")}
+                                        </p>
+
+                                        {/* Lineup */}
+                                        {event.lineup && (
+                                            <p className="mt-2 text-sm text-zinc-300">
+                                                {event.lineup}
+                                            </p>
+                                        )}
+
+                                        {/* Genre + price */}
+                                        {(event.genre || event.price) && (
+                                            <p className="mt-2 text-xs text-zinc-600 uppercase tracking-wider">
+                                                {[event.genre, event.price].filter(Boolean).join(" · ")}
+                                            </p>
+                                        )}
+
+                                        {/* Link */}
+                                        {event.url && (
+                                            <a
+                                                href={event.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="mt-3 inline-block text-xs text-zinc-500 hover:text-white transition-colors"
+                                            >
+                                                이벤트 보기 →
+                                            </a>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     ))}
                 </div>
             ) : (
-                <p className="text-gray-600 text-sm">해당 지역 이벤트가 없습니다.</p>
+                <p className="text-zinc-600 text-sm">해당 지역 이벤트가 없습니다.</p>
             )}
         </div>
     )
