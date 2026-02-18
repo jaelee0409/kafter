@@ -54,6 +54,7 @@ export default async function CityPage({
     .from("events")
     .select("*")
     .eq("city", city)
+    .eq("status", "approved")
     .gte("date", yesterday)
     .order("date", { ascending: true });
 
