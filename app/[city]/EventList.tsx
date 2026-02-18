@@ -320,7 +320,7 @@ export default function EventList({ events }: { events: Event[] }) {
                         href={event.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-4 inline-flex items-center gap-1.5 px-3 py-1 text-xs rounded-full border border-zinc-700 text-zinc-400 hover:border-[#e8195d]/60 hover:text-[#e8195d] transition-all"
+                        className="mt-4 inline-flex items-center gap-1.5 px-3 py-1 text-xs rounded-full border border-zinc-700 text-zinc-400 hover:border-white hover:text-white transition-all"
                       >
                         이벤트 보기 →
                       </a>
