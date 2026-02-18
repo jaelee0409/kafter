@@ -1,20 +1,24 @@
-import type { Metadata } from "next"
-import Link from "next/link"
+import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "KAfter | 한국 클럽 DJ 라인업 & 파티 일정",
-  description: "서울·부산·대구 클럽 DJ 라인업, 파티 일정, 테크노·하우스 이벤트 정보를 한눈에.",
+  description:
+    "한국 클럽 DJ 라인업, 파티 일정, 테크노, 하우스, 힙합 등 다양한 장르 이벤트 정보를 한눈에.",
   openGraph: {
     title: "KAfter | 한국 클럽 DJ 라인업 & 파티 일정",
-    description: "서울·부산·대구 클럽 DJ 라인업, 파티 일정, 테크노·하우스 이벤트 정보를 한눈에.",
+    description:
+      "한국 클럽 DJ 라인업, 파티 일정, 테크노, 하우스, 힙합 등 다양한 장르 이벤트 정보를 한눈에.",
     url: "/",
   },
-}
+};
 
 const cities = [
   { name: "서울", slug: "seoul" },
   { name: "부산", slug: "busan" },
+  { name: "인천", slug: "incheon" },
   { name: "대구", slug: "daegu" },
+  { name: "대전", slug: "daejeon" },
 ];
 
 export default function Home() {

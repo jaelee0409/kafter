@@ -9,13 +9,13 @@ const siteUrl =
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "KAfter | 한국 클럽 DJ 라인업 & 파티 일정",
-    template: "%s | KAfter",
+    default: "Kafter | 한국 클럽 DJ 라인업 & 파티 일정",
+    template: "%s | Kafter",
   },
   description:
     "한국 클럽 DJ 라인업, 파티 일정, 테크노, 하우스, 힙합 등 다양한 장르 이벤트 정보를 모아보는 클럽 인덱스. 전국 클럽 정보 제공.",
   openGraph: {
-    siteName: "KAfter",
+    siteName: "Kafter",
     locale: "ko_KR",
     type: "website",
   },
