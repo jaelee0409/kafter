@@ -81,9 +81,6 @@ export default function AdminPage() {
     const [form, setForm] = useState(emptyForm)
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
     const [errorMsg, setErrorMsg] = useState("")
-
-    if (!unlocked) return <PasswordGate onUnlock={() => setUnlocked(true)} />
-
     const [pending, setPending] = useState<PendingEvent[]>([])
     const [loadingPending, setLoadingPending] = useState(true)
     const [actionId, setActionId] = useState<number | null>(null)
@@ -100,8 +97,10 @@ export default function AdminPage() {
     }, [])
 
     useEffect(() => {
-        fetchPending()
-    }, [fetchPending])
+        if (unlocked) fetchPending()
+    }, [unlocked, fetchPending])
+
+    if (!unlocked) return <PasswordGate onUnlock={() => setUnlocked(true)} />
 
     async function approve(id: number) {
         setActionId(id)
