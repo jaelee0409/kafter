@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 type Event = {
     id: number
@@ -15,6 +15,17 @@ type Event = {
     url: string | null
 }
 
+function parseHHMM(s: string): number {
+    const m = s.trim().match(/^(\d{1,2}):(\d{2})$/)
+    return m ? parseInt(m[1]) * 60 + parseInt(m[2]) : NaN
+}
+
+function parseStartTime(time: string | null): number {
+    if (!time) return Infinity
+    const start = parseHHMM(time.split("~")[0])
+    return isNaN(start) ? Infinity : start
+}
+
 function formatDateHeader(dateStr: string) {
     const d = new Date(dateStr + "T00:00:00")
     const days = ["일", "월", "화", "수", "목", "금", "토"]
@@ -24,9 +35,12 @@ function formatDateHeader(dateStr: string) {
     return `${month}월 ${day}일 (${dow})`
 }
 
+const PAGE_SIZE = 5
+
 export default function EventList({ events }: { events: Event[] }) {
     const [selectedNeighborhood, setSelectedNeighborhood] = useState<string | null>(null)
     const [selectedGenres, setSelectedGenres] = useState<string[]>([])
+    const [visibleDates, setVisibleDates] = useState(PAGE_SIZE)
 
     const neighborhoods = Array.from(
         new Set(events.map((e) => e.neighborhood).filter(Boolean))
@@ -49,6 +63,9 @@ export default function EventList({ events }: { events: Event[] }) {
         return true
     })
 
+    // Reset pagination when filters change
+    useEffect(() => { setVisibleDates(PAGE_SIZE) }, [selectedNeighborhood, selectedGenres])
+
     // Group by date
     const grouped = filtered.reduce<Record<string, Event[]>>((acc, event) => {
         if (!acc[event.date]) acc[event.date] = []
@@ -56,6 +73,11 @@ export default function EventList({ events }: { events: Event[] }) {
         return acc
     }, {})
     const sortedDates = Object.keys(grouped).sort()
+    for (const date of sortedDates) {
+        grouped[date].sort((a, b) => parseStartTime(a.start_time) - parseStartTime(b.start_time))
+    }
+    const visibleDateList = sortedDates.slice(0, visibleDates)
+    const hasMore = visibleDates < sortedDates.length
 
     return (
         <div className="mx-auto mt-12 max-w-4xl">
@@ -132,7 +154,7 @@ export default function EventList({ events }: { events: Event[] }) {
             {/* Events grouped by date */}
             {sortedDates.length > 0 ? (
                 <div className="space-y-14">
-                    {sortedDates.map((date) => (
+                    {visibleDateList.map((date) => (
                         <div key={date}>
                             {/* Date header */}
                             <div className="flex items-center gap-4 mb-6">
@@ -206,6 +228,14 @@ export default function EventList({ events }: { events: Event[] }) {
                             </div>
                         </div>
                     ))}
+                    {hasMore && (
+                        <button
+                            onClick={() => setVisibleDates((v) => v + PAGE_SIZE)}
+                            className="w-full py-3 text-sm text-zinc-500 border border-zinc-800 rounded hover:border-zinc-600 hover:text-zinc-300 transition-colors"
+                        >
+                            더 보기
+                        </button>
+                    )}
                 </div>
             ) : (
                 <p className="text-zinc-500 text-sm">해당 지역 이벤트가 없습니다.</p>
