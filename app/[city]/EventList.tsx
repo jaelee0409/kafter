@@ -172,7 +172,7 @@ export default function EventList({ events }: { events: Event[] }) {
                   onClick={() => setSelectedNeighborhood(null)}
                   className={`px-4 py-1.5 text-xs rounded-full border transition-colors ${
                     selectedNeighborhood === null
-                      ? "border-white text-white"
+                      ? "border-[#e8195d] text-[#e8195d]"
                       : "border-zinc-700 text-zinc-500 hover:border-zinc-400 hover:text-zinc-300"
                   }`}
                 >
@@ -188,7 +188,7 @@ export default function EventList({ events }: { events: Event[] }) {
                     }
                     className={`px-4 py-1.5 text-xs rounded-full border transition-colors ${
                       selectedNeighborhood === n
-                        ? "border-white text-white"
+                        ? "border-[#e8195d] text-[#e8195d]"
                         : "border-zinc-700 text-zinc-500 hover:border-zinc-400 hover:text-zinc-300"
                     }`}
                   >
@@ -208,7 +208,7 @@ export default function EventList({ events }: { events: Event[] }) {
                   onClick={() => setSelectedGenres([])}
                   className={`px-4 py-1.5 text-xs rounded-full border transition-colors ${
                     selectedGenres.length === 0
-                      ? "border-white text-white"
+                      ? "border-[#e8195d] text-[#e8195d]"
                       : "border-zinc-700 text-zinc-500 hover:border-zinc-400 hover:text-zinc-300"
                   }`}
                 >
@@ -226,7 +226,7 @@ export default function EventList({ events }: { events: Event[] }) {
                     }
                     className={`px-4 py-1.5 text-xs rounded-full border transition-colors ${
                       selectedGenres.includes(g)
-                        ? "border-white text-white"
+                        ? "border-[#e8195d] text-[#e8195d]"
                         : "border-zinc-700 text-zinc-500 hover:border-zinc-400 hover:text-zinc-300"
                     }`}
                   >
@@ -246,7 +246,7 @@ export default function EventList({ events }: { events: Event[] }) {
             <div key={date}>
               {/* Date header */}
               <div className="flex items-center gap-4 mb-6">
-                <span className="text-xs font-medium uppercase tracking-widest text-zinc-500">
+                <span className="text-xs font-medium uppercase tracking-widest text-[#e8195d]/70">
                   {formatDateHeader(date)}
                 </span>
                 <div className="flex-1 h-px bg-zinc-800" />
@@ -255,7 +255,7 @@ export default function EventList({ events }: { events: Event[] }) {
               {/* Events under this date */}
               <div className="space-y-8">
                 {grouped[date].map((event) => (
-                  <div key={event.id} className="pl-4 border-l border-zinc-800">
+                  <div key={event.id} className="group/card pl-4 border-l border-zinc-800 hover:border-[#e8195d]/40 transition-colors">
                     {/* Name + time */}
                     <div className="flex items-baseline justify-between gap-4">
                       <h3 className="text-xl font-medium text-white">
@@ -320,7 +320,7 @@ export default function EventList({ events }: { events: Event[] }) {
                         href={event.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-3 inline-block text-sm text-zinc-400 hover:text-white transition-colors"
+                        className="mt-4 inline-flex items-center gap-1.5 px-3 py-1 text-xs rounded-full border border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white transition-all"
                       >
                         이벤트 보기 →
                       </a>
@@ -333,7 +333,7 @@ export default function EventList({ events }: { events: Event[] }) {
           {hasMore && (
             <button
               onClick={() => setVisibleDates((v) => v + PAGE_SIZE)}
-              className="w-full py-3 text-sm text-zinc-500 border border-zinc-800 rounded hover:border-zinc-600 hover:text-zinc-300 transition-colors"
+              className="w-full py-3 text-sm text-[#e8195d]/60 border border-[#e8195d]/20 rounded hover:border-[#e8195d]/60 hover:text-[#e8195d] transition-colors"
             >
               더 보기
             </button>

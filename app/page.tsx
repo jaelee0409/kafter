@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "KAfter | 한국 클럽 DJ 라인업 & 파티 일정",
+  title: "Kafter | 한국 클럽 DJ 라인업 & 파티 일정",
   description:
     "한국 클럽 DJ 라인업, 파티 일정, 테크노, 하우스, 힙합 등 다양한 장르 이벤트 정보를 한눈에.",
   openGraph: {
-    title: "KAfter | 한국 클럽 DJ 라인업 & 파티 일정",
+    title: "Kafter | 한국 클럽 DJ 라인업 & 파티 일정",
     description:
       "한국 클럽 DJ 라인업, 파티 일정, 테크노, 하우스, 힙합 등 다양한 장르 이벤트 정보를 한눈에.",
     url: "/",
@@ -23,24 +23,38 @@ const cities = [
 
 export default function Home() {
   return (
-    <main>
+    <main className="relative">
       {/* Hero */}
-      <section className="px-6 py-16 text-center">
-        <h1 className="text-5xl font-semibold tracking-tight">Kafter</h1>
-        <p className="mt-6 text-gray-500">한국 클럽 DJ 라인업 & 파티 일정</p>
+      <section className="relative flex flex-col items-center justify-center px-6 pt-36 pb-28 text-center overflow-hidden">
+        {/* Glow */}
+        <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#e8195d]/8 blur-[100px]" />
+
+        <p className="text-[11px] uppercase tracking-[0.35em] text-zinc-600 mb-8">
+          한국 클럽 이벤트 인덱스
+        </p>
+        <h1 className="text-8xl font-black tracking-tighter text-white leading-none">
+          KAFTER
+        </h1>
+        <p className="mt-6 text-sm text-zinc-500">
+          DJ 라인업 &amp; 파티 일정
+        </p>
       </section>
 
       {/* Cities */}
-      <section className="mx-auto max-w-3xl px-6 py-8">
-        <div className="space-y-6">
+      <section className="mx-auto max-w-2xl px-6 pb-32">
+        <div>
           {cities.map((city) => (
             <Link
               key={city.slug}
               href={`/${city.slug}`}
-              className="flex justify-between border-b border-zinc-800 py-4 text-lg transition hover:text-gray-300"
+              className="group flex items-center justify-between py-5 border-b border-zinc-900 hover:border-zinc-800 transition-all duration-200"
             >
-              <span>{city.name}</span>
-              <span className="text-gray-600">→</span>
+              <span className="text-2xl font-medium text-zinc-400 group-hover:text-white transition-colors duration-200">
+                {city.name}
+              </span>
+              <span className="text-zinc-700 group-hover:text-[#e8195d] transition-colors duration-200 text-base">
+                →
+              </span>
             </Link>
           ))}
         </div>

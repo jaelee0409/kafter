@@ -24,7 +24,7 @@ export async function generateMetadata({
     title: `${cityName} 클럽 이벤트`,
     description: `${cityName} 클럽 DJ 라인업과 파티 일정. 테크노, 하우스, 힙합 등 다양한 장르 이벤트 정보 제공.`,
     openGraph: {
-      title: `${cityName} 클럽 이벤트 | KAfter`,
+      title: `${cityName} 클럽 이벤트 | Kafter`,
       description: `${cityName} 클럽 DJ 라인업과 파티 일정. 테크노, 하우스, 힙합 등 다양한 장르 이벤트 정보 제공.`,
       url: `/${city}`,
     },
@@ -133,22 +133,25 @@ export default async function CityPage({
   };
 
   return (
-    <main className="px-6 py-24">
+    <main className="relative px-6 py-24 overflow-hidden">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      {/* Glow */}
+      <div className="pointer-events-none absolute left-0 top-0 w-100 h-100 rounded-full bg-[#e8195d]/6 blur-[120px] -translate-x-1/2 -translate-y-1/4" />
+
       <div className="mx-auto max-w-4xl">
         <Link
           href="/"
-          className="text-xs text-zinc-600 hover:text-zinc-400 transition-colors"
+          className="text-xs text-zinc-600 hover:text-[#e8195d] transition-colors"
         >
           ← 홈
         </Link>
-        <h1 className="mt-6 text-4xl font-semibold tracking-tight">
+        <h1 className="mt-6 text-5xl font-black tracking-tighter text-white">
           {cityName}
         </h1>
-        <p className="mt-4 text-gray-500">
+        <p className="mt-3 text-sm text-zinc-500">
           {cityName} 클럽 DJ 라인업 & 파티 일정
         </p>
       </div>
