@@ -23,6 +23,9 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary",
   },
+  other: {
+    "google-adsense-account": "ca-pub-2053557989020507",
+  },
 };
 
 export default function RootLayout({
