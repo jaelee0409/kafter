@@ -333,7 +333,7 @@ export default function EventList({ events }: { events: Event[] }) {
           {hasMore && (
             <button
               onClick={() => setVisibleDates((v) => v + PAGE_SIZE)}
-              className="w-full py-3 text-sm text-[#e8195d]/60 border border-[#e8195d]/20 rounded hover:border-[#e8195d]/60 hover:text-[#e8195d] transition-colors"
+              className="w-full py-3 text-sm text-[#e8195d]/60 border border-[#e8195d]/60 rounded hover:border-[#e8195d] hover:text-[#e8195d] transition-colors"
             >
               더 보기
             </button>
