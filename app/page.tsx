@@ -52,7 +52,7 @@ export default function Home() {
               <span className="text-2xl font-medium text-zinc-400 group-hover:text-white transition-colors duration-200">
                 {city.name}
               </span>
-              <span className="text-zinc-700 group-hover:text-[#e8195d] transition-colors duration-200 text-base">
+              <span className="text-zinc-700 group-hover:text-white transition-colors duration-200 text-base">
                 →
               </span>
             </Link>
