@@ -7,7 +7,9 @@ import EventList from "./EventList";
 const cities: Record<string, string> = {
   seoul: "서울",
   busan: "부산",
+  incheon: "인천",
   daegu: "대구",
+  daejeon: "대전",
 };
 
 export async function generateMetadata({
@@ -91,8 +93,51 @@ export default async function CityPage({
     return false;
   });
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": events.map((e) => {
+      const startTime = e.start_time?.split("~")[0].trim();
+      const startDate = startTime ? `${e.date}T${startTime}:00+09:00` : e.date;
+
+      const performers = e.lineup
+        ? e.lineup.split(/[,·]/).map((name: string) => ({
+            "@type": "Person",
+            name: name.trim(),
+          }))
+        : undefined;
+
+      return {
+        "@type": "Event",
+        name: e.name || e.club,
+        startDate,
+        location: {
+          "@type": "Place",
+          name: [e.neighborhood, e.club].filter(Boolean).join(" · "),
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: cityName,
+            addressCountry: "KR",
+          },
+        },
+        ...(performers && { performer: performers }),
+        ...(e.price && {
+          offers: {
+            "@type": "Offer",
+            price: e.price,
+            priceCurrency: "KRW",
+          },
+        }),
+        ...(e.url && { url: e.url }),
+      };
+    }),
+  };
+
   return (
     <main className="px-6 py-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="mx-auto max-w-4xl">
         <Link
           href="/"
