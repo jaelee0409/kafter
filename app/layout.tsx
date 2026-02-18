@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 
 import "./globals.css";
@@ -39,6 +40,12 @@ export default function RootLayout({
         <footer className="border-t border-zinc-900 px-6 py-10 text-center text-xs text-gray-600">
           © {new Date().getFullYear()} KAfter
         </footer>
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2053557989020507"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
         <Analytics />
       </body>
     </html>
