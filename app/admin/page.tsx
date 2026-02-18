@@ -3,6 +3,44 @@
 import { useState, useEffect, useCallback } from "react"
 import { supabase } from "@/lib/supabase"
 
+function PasswordGate({ onUnlock }: { onUnlock: () => void }) {
+    const [input, setInput] = useState("")
+    const [error, setError] = useState(false)
+
+    function handleSubmit(e: React.FormEvent) {
+        e.preventDefault()
+        if (input === process.env.NEXT_PUBLIC_ADMIN_PASSWORD) {
+            onUnlock()
+        } else {
+            setError(true)
+            setInput("")
+        }
+    }
+
+    return (
+        <main className="min-h-screen bg-black text-white flex items-center justify-center px-6">
+            <form onSubmit={handleSubmit} className="w-full max-w-xs space-y-4">
+                <h1 className="text-sm uppercase tracking-widest text-zinc-500 text-center mb-8">Admin</h1>
+                <input
+                    type="password"
+                    value={input}
+                    onChange={(e) => { setInput(e.target.value); setError(false) }}
+                    placeholder="Password"
+                    autoFocus
+                    className="w-full bg-zinc-900 border border-zinc-700 rounded px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-500"
+                />
+                {error && <p className="text-xs text-red-400 text-center">Incorrect password</p>}
+                <button
+                    type="submit"
+                    className="w-full py-3 bg-white text-black font-medium rounded hover:bg-gray-200 transition"
+                >
+                    Enter
+                </button>
+            </form>
+        </main>
+    )
+}
+
 const cities = [
     { label: "서울", value: "seoul" },
     { label: "부산", value: "busan" },
@@ -39,9 +77,12 @@ type PendingEvent = {
 }
 
 export default function AdminPage() {
+    const [unlocked, setUnlocked] = useState(false)
     const [form, setForm] = useState(emptyForm)
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
     const [errorMsg, setErrorMsg] = useState("")
+
+    if (!unlocked) return <PasswordGate onUnlock={() => setUnlocked(true)} />
 
     const [pending, setPending] = useState<PendingEvent[]>([])
     const [loadingPending, setLoadingPending] = useState(true)
